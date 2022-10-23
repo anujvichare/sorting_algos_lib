@@ -1,53 +1,53 @@
 #include <iostream>
 using namespace std;
 
-bool mergeSortedArrays(int mainArr[], int mainLength, int firstArr[], int firstLength, int secondArr[], int secondLength)
+bool MergeSortedArrays(int mainArr[], int first, int mid, int last)
 {
-	int indexMain =0; int indexFirst =0; int indexSecond = 0;
+	int indexMain =0; int indexFirst =0; int indexSecond = mid+1;
 
-	while(indexFirst < firstLength && indexSecond < secondLength)
+	int* temp = new int[20];
+
+	while(indexFirst < mid+1 && indexSecond < last+1)
 	{
-		if(indexMain > mainLength)
-			return false;
 
-		if(firstArr[indexFirst] < secondArr[indexSecond])
+		if(mainArr[indexFirst] < mainArr[indexSecond])
 		{
-			mainArr[indexMain++] = firstArr[indexFirst++];
+			temp[indexMain++] = mainArr[indexFirst++];
 		}
 		
-		else if(firstArr[indexFirst] > secondArr[indexSecond])
+		else if(mainArr[indexFirst] > mainArr[indexSecond])
 		{
-			mainArr[indexMain++] = secondArr[indexSecond++];
+			temp[indexMain++] = mainArr[indexSecond++];
 		}
 
 		else
 		{
-			mainArr[indexMain++] = firstArr[indexFirst++];
-			mainArr[indexMain++] = secondArr[indexSecond++];
+			temp[indexMain++] = mainArr[indexFirst++];
+			temp[indexMain++] = mainArr[indexSecond++];
 		}
 	}
 
-	while( indexFirst < firstLength)
+	while( indexFirst < mid+1)
 	{
+		temp[indexMain++] = mainArr[indexFirst++];
+	}
+	while(indexSecond < last+1)
+	{
+		temp[indexMain++] = mainArr[indexSecond++];
+	}
 
-		if(indexMain > mainLength)
-			return false;
-			
-		mainArr[indexMain] = firstArr[indexFirst];
-		++indexFirst;
-		++indexMain;
-	}
-	while(indexSecond < secondLength)
+	for(int i = 0;i < last+1 ; i ++)
 	{
-		if(indexMain > mainLength)
-			return false;
-		
-		mainArr[indexMain] = secondArr[indexSecond];
-		++indexSecond;
-		++indexMain;
+		mainArr[i] = temp[i];
+		cout << mainArr[i] << "-";
+
 	}
+	cout <<endl;
+	delete[] temp;
+
 	return true;
 }
+
 
 void MergeSort(int arr[], int startIndex, int endIndex)
 {
@@ -55,25 +55,25 @@ void MergeSort(int arr[], int startIndex, int endIndex)
 	if(startIndex >=  endIndex)
 		return;
 
-	int mid = (endIndex + startIndex) / 2;
-	MergeSort(startIndex, mid - 1);
-	MergeSort(mid, endIndex);
+	int mid = startIndex + (endIndex - startIndex) / 2;
+	MergeSort(arr, startIndex, mid);
+	MergeSort(arr, mid+1, endIndex);
 
-	MergeSortedArrays(arr, );
+	MergeSortedArrays(arr, startIndex, mid, endIndex);
 
 }
 
 int main()
 {
-	int main[10] = {0};
-	int a[3] = {1, 3, 4};
-	int b[4] = {2,3,4,5};
+	int main[8] = {35678, 20000, 9999, 9876, 3554, 500, 14, 1};
+	//int main[8] = {100, 2, 660 , 3600, 3, 2500, 0, 1690};
 
-	cout << merge(main, 10, a, 3, b, 4) << endl;
+	//cout << MergeSortedArrays(main, 0, 3, 7) << endl;
+	 MergeSort(main, 0, 7);
 
 	for(auto& i : main)
 		cout << i << ",";
-
+/*
 	a = {5, 6, 7};
         b = {2,3,4,1};
 
@@ -89,6 +89,6 @@ int main()
 
 	for(auto& i : main)
 		cout << i << ",";
-	
+*/	
 	return 0;
 }
